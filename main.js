@@ -9,16 +9,50 @@ form.addEventListener('submit', function(e){
         amount : amount,
         description : description,
         catogery : catogery
-    };
-    let detailsJSON = JSON.stringify(details);
-    localStorage.setItem('details', detailsJSON);
-    console.log("Expense Details stored in local storage", detailsJSON);
+    };// instead of storing to local storage we save to backend server using crudcrud
+
+    axios.post("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker", details)
+    .then((res) => {
+        showDetails(res.data);
+        console.log(res);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+    // let detailsJSON = JSON.stringify(details);
+    // localStorage.setItem('details', detailsJSON);
+    // console.log("Expense Details stored in local storage", detailsJSON);
     document.getElementById("Eamount").value = "";
     document.getElementById("description").value = "";
     document.getElementById("catogery").value = "";
 
-    showDetails(details);
+    //showDetails(details);
 });
+// window.onload = () => { // this track if page reload and this below line is = to reload that means page reloaded
+//     if(performance.nevigation.type === 'reload'){
+//         loadDataAfterReload(); // we called this after page reload so that again data get from server & show to page
+//     }
+// }
+window.onload = () => {
+    // Wait 1 second before checking the page navigation type.
+    setTimeout(function() {
+        const navigationEntries = performance.getEntriesByType('navigation');// this is performance API to track page reload performance.getEntriesByType('navigation'). This method returns an array of navigation performance entries.We check if there are any navigation entries (navigationEntries.length > 0) and if the type of the first entry (navigationEntries[0].type) is 'reload'
+        if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
+            // Run the loadDataAfterReload function.
+            loadDataAfterReload();
+        }
+    }, 1000);
+};
+
+function loadDataAfterReload(){
+    axios.get("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
+    .then((res => {
+        res.data.forEach(showDetails);
+    }))
+    .catch((err) => {
+        console.log(err);
+    });
+}
 
 function showDetails(details){
     let parent = document.getElementById("summary");
