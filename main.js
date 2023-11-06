@@ -11,7 +11,7 @@ form.addEventListener('submit', function(e){
         catogery : catogery
     };// instead of storing to local storage we save to backend server using crudcrud
 
-    axios.post("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker", details)
+    axios.post("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker", details)
     .then((res) => {
         showDetails(res.data);
         console.log(res);
@@ -28,31 +28,31 @@ form.addEventListener('submit', function(e){
 
     //showDetails(details);
 });
-window.addEventListener('DOMContentLoaded', ()=>{// this is for tracking page load or refresh
-    axios.get("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
-    .then((res) =>{
-        console.log(res);
-        for(let i=0; i<res.length; i++){
-            showDetails(res[i]);
-        }
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-})
-// window.onload = () => {
-//     // Wait 1 second before checking the page navigation type.
-//     setTimeout(function() {
-//         const navigationEntries = performance.getEntriesByType('navigation');// this is performance API to track page reload performance.getEntriesByType('navigation'). This method returns an array of navigation performance entries.We check if there are any navigation entries (navigationEntries.length > 0) and if the type of the first entry (navigationEntries[0].type) is 'reload'
-//         if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
-//             // Run the loadDataAfterReload function.
-//             loadDataAfterReload();
+// window.addEventListener('DOMContentLoaded', ()=>{// this is for tracking page load or refresh but this not wrking
+//     axios.get("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker")
+//     .then((res) =>{
+//         console.log(res);
+//         for(let i=0; i<res.length; i++){
+//             showDetails(res[i]);
 //         }
-//     }, 1000);
-// };
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
+// })
+window.onload = () => {
+    // Wait 1 second before checking the page navigation type.
+    setTimeout(function() {
+        const navigationEntries = performance.getEntriesByType('navigation');// this is performance API to track page reload performance.getEntriesByType('navigation'). This method returns an array of navigation performance entries.We check if there are any navigation entries (navigationEntries.length > 0) and if the type of the first entry (navigationEntries[0].type) is 'reload'
+        if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
+            // Run the loadDataAfterReload function.
+            loadDataAfterReload();
+        }
+    }, 1000);
+};
 
 function loadDataAfterReload(){
-    axios.get("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
+    axios.get("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker")
     .then((res => {
         res.data.forEach(showDetails);
     }))
@@ -70,23 +70,38 @@ function showDetails(details){
     deleteBtn.value = 'delete';
     deleteBtn.type = 'button';
 
-    deleteBtn.onclick = () =>{// Delete fn
-        axios.delete("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
+    deleteBtn.onclick = (details) =>{// Delete fn
+        axios.delete(`https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker/654912462e0fb203e8543f9f`)
         .then((res) => {
+            showDetails(res)
             console.log(res)
+            parent.removeChild(child)
         })
         .catch((err) => {
             console.log(err);
         })
-        parent.removeChild(child);
+        //localStorage.removeItem('details');
+        //parent.removeChild(child);
     };
 
     let editBtn = document.createElement('input');
     editBtn.type = 'button';
     editBtn.value = 'edit';
-    editBtn.onclick = () => {
-        localStorage.removeItem('details');
-        parent.removeChild(child);
+    editBtn.onclick = (id) => {
+        const updatedDetails = {
+            amount: "free" // You can update other fields here as needed
+        };
+        axios.patch(`https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker/6548ca062e0fb203e8543e45`, updatedDetails)
+        .then((res) => {
+            parent.removeChild(child)
+            showDetails(res)
+            console.log(res)
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+        //localStorage.removeItem('details');
+        //parent.removeChild(child);
 
         document.getElementById("Eamount").value = details.amount;
         document.getElementById("description").value = details.description;
