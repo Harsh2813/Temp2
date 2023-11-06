@@ -28,21 +28,28 @@ form.addEventListener('submit', function(e){
 
     //showDetails(details);
 });
-// window.onload = () => { // this track if page reload and this below line is = to reload that means page reloaded
-//     if(performance.nevigation.type === 'reload'){
-//         loadDataAfterReload(); // we called this after page reload so that again data get from server & show to page
-//     }
-// }
-window.onload = () => {
-    // Wait 1 second before checking the page navigation type.
-    setTimeout(function() {
-        const navigationEntries = performance.getEntriesByType('navigation');// this is performance API to track page reload performance.getEntriesByType('navigation'). This method returns an array of navigation performance entries.We check if there are any navigation entries (navigationEntries.length > 0) and if the type of the first entry (navigationEntries[0].type) is 'reload'
-        if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
-            // Run the loadDataAfterReload function.
-            loadDataAfterReload();
+window.addEventListener('DOMContentLoaded', ()=>{// this is for tracking page load or refresh
+    axios.get("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
+    .then((res) =>{
+        console.log(res);
+        for(let i=0; i<res.length; i++){
+            showDetails(res[i]);
         }
-    }, 1000);
-};
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
+// window.onload = () => {
+//     // Wait 1 second before checking the page navigation type.
+//     setTimeout(function() {
+//         const navigationEntries = performance.getEntriesByType('navigation');// this is performance API to track page reload performance.getEntriesByType('navigation'). This method returns an array of navigation performance entries.We check if there are any navigation entries (navigationEntries.length > 0) and if the type of the first entry (navigationEntries[0].type) is 'reload'
+//         if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
+//             // Run the loadDataAfterReload function.
+//             loadDataAfterReload();
+//         }
+//     }, 1000);
+// };
 
 function loadDataAfterReload(){
     axios.get("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
