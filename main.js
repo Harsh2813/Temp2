@@ -70,8 +70,14 @@ function showDetails(details){
     deleteBtn.value = 'delete';
     deleteBtn.type = 'button';
 
-    deleteBtn.onclick = () =>{
-        localStorage.removeItem('details');
+    deleteBtn.onclick = () =>{// Delete fn
+        axios.delete("https://crudcrud.com/api/cde4c5d5574d4b0fae040e11f46b4c6b/expenseTracker")
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
         parent.removeChild(child);
     };
 
