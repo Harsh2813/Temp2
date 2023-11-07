@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></link>
+    <title>Document</title>
+</head>
+<body>
+    <section class = "container">
+        <form id = "expense-form">
+            <div class = "row align-items-center">
+                <div class="mb-3 col-4">
+                    <label for="Eamount" class="form-label">Choose Price</label>
+                    <input type="amount" class="form-control row-cols-4" id="Eamount"/>
+                </div>
+                <div class="mb-3 col-4">
+                    <label for="description" class="form-label">Choose Dish</label>
+                    <input type="text" class="form-control col-4" id="description"/>
+                </div>
+                <div class="mb-3 col-3">
+                    <label for="catogery" class="form-label">Choose a Table</label>
+                    <select name = "choose" id = "catogery">
+                        <option value = "Table 1">Table 1</option>
+                        <option value = "Table 2">Table 2</option>
+                        <option value = "Table 3">Table 3</option>
+                    </select>
+                </div>
+                <div class = "col-1">
+                    <button type="submit" class="btn btn-primary">Add to Bill</button>
+                </div>
+            </div>
+        </form>
+        <ul id = "summary"></ul>
+    </section>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script src = "taskRestaurant.js"></script>
+</body>
+</html>
