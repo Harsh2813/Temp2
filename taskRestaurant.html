@@ -10,27 +10,20 @@
         <form id = "expense-form">
             <div class = "row align-items-center">
                 <div class="mb-3 col-4">
-                    <label for="Eamount" class="form-label">Choose Price</label>
+                    <label for="Eamount" class="form-label">Selling Price</label>
                     <input type="amount" class="form-control row-cols-4" id="Eamount"/>
                 </div>
                 <div class="mb-3 col-4">
-                    <label for="description" class="form-label">Choose Dish</label>
+                    <label for="description" class="form-label">Product Name</label>
                     <input type="text" class="form-control col-4" id="description"/>
                 </div>
-                <div class="mb-3 col-3">
-                    <label for="catogery" class="form-label">Choose a Table</label>
-                    <select name = "choose" id = "catogery">
-                        <option value = "Table 1">Table 1</option>
-                        <option value = "Table 2">Table 2</option>
-                        <option value = "Table 3">Table 3</option>
-                    </select>
-                </div>
                 <div class = "col-1">
-                    <button type="submit" class="btn btn-primary">Add to Bill</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
                 </div>
             </div>
         </form>
-        <ul id = "summary"></ul>
+        <ul id = "summary"><h2>Products</h2></ul>
+        <h3 id='total'>Total value worth of Product : Rs<span id="total-value">0</span></h3>
     </section>
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script src = "taskRestaurant.js"></script>

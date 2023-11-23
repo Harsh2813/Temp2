@@ -1,24 +1,25 @@
+let totalValue = parseFloat(localStorage.getItem("totalValue")) || 0;
 let form = document.getElementById("expense-form");
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   let amount = document.getElementById("Eamount").value;
   let description = document.getElementById("description").value;
-  let catogery = document.getElementById("catogery").value;
 
   let details = {
     amount: amount,
     description: description,
-    catogery: catogery,
   }; // instead of storing to local storage we save to backend server using crudcrud
 
   axios
     .post(
-      "https://crudcrud.com/api/7a83e74f5d5244d4a2d520e6f1bb1f50/expenseTracker",
+      "https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker",
       details
     )
     .then((res) => {
       showDetails(res.data);
-      console.log(res);
+      totalValue += parseFloat(amount);
+      updateTotalValue();
     })
     .catch((err) => {
       console.log(err);
@@ -28,12 +29,11 @@ form.addEventListener("submit", function (e) {
   // console.log("Expense Details stored in local storage", detailsJSON);
   document.getElementById("Eamount").value = "";
   document.getElementById("description").value = "";
-  document.getElementById("catogery").value = "";
 
   //showDetails(details);
 });
 // window.addEventListener('DOMContentLoaded', ()=>{// this is for tracking page load or refresh but this not wrking
-//     axios.get("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker")
+//     axios.get("https://crudcrud.com/api/2a1d31e4d9214c6ba4013caa224ecf16/expenseTracker")
 //     .then((res) =>{
 //         console.log(res);
 //         for(let i=0; i<res.length; i++){
@@ -58,23 +58,24 @@ window.onload = () => {
   }, 1000);
 };
 
-function loadDataAfterReload() {
-  axios
-    .get(
-      "https://crudcrud.com/api/7a83e74f5d5244d4a2d520e6f1bb1f50/expenseTracker"
-    )
-    .then((res) => {
-      res.data.forEach(showDetails);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+async function loadDataAfterReload() {
+  try {
+    const res = await axios.get("https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker");
+    
+    // Use Promise.all to wait for all asynchronous operations to complete
+    await Promise.all(res.data.map(showDetails));
+
+    // Now that all details are processed, update the total value
+    updateTotalValue();
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 function showDetails(details) {
   let parent = document.getElementById("summary");
   let child = document.createElement("li");
-  child.textContent = `${details.amount} ${details.description} ${details.catogery}`;
+  child.textContent = `${details.amount} ${details.description}`;
 
   let deleteBtn = document.createElement("input");
   deleteBtn.value = "delete";
@@ -84,12 +85,12 @@ function showDetails(details) {
     // Delete fn
     axios
       .delete(
-        `https://crudcrud.com/api/7a83e74f5d5244d4a2d520e6f1bb1f50/expenseTracker/654a053a2e0fb203e8544156`
+        `https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker/655f81b2f3272103e862e00d/`
       )
       .then((res) => {
-        showDetails(res);
-        console.log(res);
         parent.removeChild(child);
+        totalValue -= parseFloat(details.amount);
+        updateTotalValue();
       })
       .catch((err) => {
         console.log(err);
@@ -98,34 +99,15 @@ function showDetails(details) {
     //parent.removeChild(child);
   };
 
-  let editBtn = document.createElement("input");
-  editBtn.type = "button";
-  editBtn.value = "edit";
-  editBtn.onclick = (id) => {
-    const updatedDetails = {
-      amount: "free", // You can update other fields here as needed
-    };
-    axios
-      .patch(
-        `https://crudcrud.com/api/7a83e74f5d5244d4a2d520e6f1bb1f50/expenseTracker/654a05432e0fb203e8544157`,
-        updatedDetails
-      )
-      .then((res) => {
-        parent.removeChild(child);
-        showDetails(res);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    //localStorage.removeItem('details');
-    //parent.removeChild(child);
-
-    document.getElementById("Eamount").value = details.amount;
-    document.getElementById("description").value = details.description;
-    document.getElementById("catogery").value = details.catogery;
-  };
   child.appendChild(deleteBtn);
-  child.appendChild(editBtn);
   parent.appendChild(child);
+  updateTotalValue();
+}
+function updateTotalValue() {
+  // Convert totalValue to a number if it's not already
+  totalValue = parseFloat(totalValue);
+
+  // Now that totalValue is a number, format it with two decimal places
+  document.getElementById("total-value").textContent = totalValue.toFixed(2);
+  localStorage.setItem("totalValue", totalValue);
 }
