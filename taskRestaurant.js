@@ -13,7 +13,7 @@ form.addEventListener("submit", function (e) {
 
   axios
     .post(
-      "https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker",
+      "https://crudcrud.com/api/20325cd32a0f45db9efc569b282bd234/expenseTracker",
       details
     )
     .then((res) => {
@@ -60,7 +60,7 @@ window.onload = () => {
 
 async function loadDataAfterReload() {
   try {
-    const res = await axios.get("https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker");
+    const res = await axios.get("https://crudcrud.com/api/20325cd32a0f45db9efc569b282bd234/expenseTracker");
     
     // Use Promise.all to wait for all asynchronous operations to complete
     await Promise.all(res.data.map(showDetails));
@@ -81,11 +81,11 @@ function showDetails(details) {
   deleteBtn.value = "delete";
   deleteBtn.type = "button";
 
-  deleteBtn.onclick = (details) => {
+  deleteBtn.onclick = () => {
     // Delete fn
     axios
       .delete(
-        `https://crudcrud.com/api/955f6416b57d4cd4a7a446bcd81e6820/expenseTracker/655f81b2f3272103e862e00d/`
+        `https://crudcrud.com/api/20325cd32a0f45db9efc569b282bd234/expenseTracker/${details._id}`
       )
       .then((res) => {
         parent.removeChild(child);
