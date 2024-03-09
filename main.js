@@ -11,9 +11,9 @@ form.addEventListener('submit', function(e){
         catogery : catogery
     };// instead of storing to local storage we save to backend server using crudcrud
 
-    axios.post("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker", details)
+    axios.post("https://pay-me-7bba7-default-rtdb.firebaseio.com/expenseTracker.json", details)
     .then((res) => {
-        showDetails(res.data);
+        showDetails(details);
         console.log(res);
     })
     .catch((err) => {
@@ -52,9 +52,17 @@ window.onload = () => {
 };
 
 function loadDataAfterReload(){
-    axios.get("https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker")
+    axios.get("https://pay-me-7bba7-default-rtdb.firebaseio.com/expenseTracker.json")
     .then((res => {
-        res.data.forEach(showDetails);
+        let data = res.data;
+        for(let key in data){
+            showDetails({
+                amount: data[key].amount,
+                description: data[key].description,
+                catogery: data[key].catogery
+            })
+        }
+        console.log(res);
     }))
     .catch((err) => {
         console.log(err);
@@ -71,7 +79,7 @@ function showDetails(details){
     deleteBtn.type = 'button';
 
     deleteBtn.onclick = (details) =>{// Delete fn
-        axios.delete(`https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker/654912462e0fb203e8543f9f`)
+        axios.delete(`https://pay-me-7bba7-default-rtdb.firebaseio.com/expenseTracker.json`)
         .then((res) => {
             showDetails(res)
             console.log(res)
@@ -91,7 +99,7 @@ function showDetails(details){
         const updatedDetails = {
             amount: "free" // You can update other fields here as needed
         };
-        axios.patch(`https://crudcrud.com/api/85d5963841734e2d960d4171f631292b/expenseTracker/6548ca062e0fb203e8543e45`, updatedDetails)
+        axios.patch(`https://pay-me-7bba7-default-rtdb.firebaseio.com/expenseTracker.json`, updatedDetails)
         .then((res) => {
             parent.removeChild(child)
             showDetails(res)

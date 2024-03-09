@@ -6,24 +6,33 @@
     <title>Document</title>
 </head>
 <body>
-    <section class = "container">
-        <form id = "expense-form">
-            <div class = "row align-items-center">
+<nav class="navbar">
+        <div class="container">
+            <span class="navbar-brand">Restaurant Board</span>
+        </div>
+    </nav>
+
+    <section class="container">
+        <form id="expense-form">
+            <div class="row align-items-center">
                 <div class="mb-3 col-4">
                     <label for="Eamount" class="form-label">Selling Price</label>
-                    <input type="amount" class="form-control row-cols-4" id="Eamount"/>
+                    <input type="number" class="form-control" id="Eamount"/>
                 </div>
                 <div class="mb-3 col-4">
                     <label for="description" class="form-label">Product Name</label>
-                    <input type="text" class="form-control col-4" id="description"/>
+                    <input type="text" class="form-control" id="description"/>
                 </div>
-                <div class = "col-1">
+                <div class="col-1">
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </div>
             </div>
         </form>
-        <ul id = "summary"><h2>Products</h2></ul>
-        <h3 id='total'>Total value worth of Product : Rs<span id="total-value">0</span></h3>
+        <ul id="summary">
+            <h2>Products</h2>
+            <p>After editing once, please refresh the page to edit or delete again</p>
+        </ul>
+        <h3 id="total">Total value worth of Products: <span id="total-value">0.00</span> Rs</h3>
     </section>
     <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script src = "taskRestaurant.js"></script>

@@ -1,5 +1,5 @@
 // AXIOS GLOBALS
-axios.defults.headers.common['Authorization-Token'] = 'any url--- token';
+//axios.defults.headers.common['Authorization-Token'] = 'any url--- token';
 
 // GET REQUEST = to get data from server. Remember axios is a library by which we r interacting to backend api data
 function getTodos() {
